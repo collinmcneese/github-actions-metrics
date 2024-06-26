@@ -1,0 +1,26 @@
+{
+  "scripts": {
+    "start": "node index.js",
+    "dev": "nodemon index.js",
+    "seed": "node seed-data.js"
+  },
+  "name": "webhook-collector-opensearch",
+  "description": "A simple webhook collector for OpenSearch",
+  "version": "0.1.0",
+  "engines": {
+    "npm": ">=8.0.0",
+    "node": ">=20.0.0"
+  },
+  "exports": "./index.js",
+  "type": "module",
+  "dependencies": {
+    "@eslint/js": "^9.5.0",
+    "@opensearch-project/opensearch": "^2.8.0",
+    "express": "^4.19.2",
+    "nodemon": "^3.1.0",
+    "smee-client": "^2.0.1"
+  },
+  "devDependencies": {
+    "eslint": "^9.5.0"
+  }
+}
