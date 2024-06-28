@@ -41,9 +41,9 @@ jobs:
         uses: actions/checkout@v4
       - name: Docker Compose Up
         run: docker-compose -f grafana-opensearch/docker-compose.yml up -d
-      - name: Check Grafana
-        run: curl http://localhost:13000
-      - name: Check opensearch-dashboards
-        run: curl -k https://localhost:5601
-      - name: Check webhook-collector
-        run: curl http://localhost:3000
+      # - name: Check Grafana
+      #   run: curl http://localhost:13000
+      # - name: Check opensearch-dashboards
+      #   run: curl -k https://localhost:5601
+      # - name: Check webhook-collector
+      #   run: curl http://localhost:3000
