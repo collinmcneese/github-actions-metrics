@@ -3,13 +3,13 @@
 
 import { Client } from '@opensearch-project/opensearch';
 
-var host = "opensearch-node1";
-var protocol = "https";
-var port = 9200;
-var auth = 'admin:ChangeMe123!';
+const host = `${process.env.OPENSEARCH_HOST}`;
+const protocol = `${process.env.OPENSEARCH_PROTOCOL}`;
+const port = `${process.env.OPENSEARCH_PORT}`;
+const auth = `${process.env.OPENSEARCH_USERNAME}:${process.env.OPENSEARCH_PASSWORD}`;
 
 const client = new Client({
-  nodes: `${protocol}://${auth}@${host}:${port}`,
+  nodes: `${protocol}://${auth}@${host}:${port}`.replace(/"/g, ''),
   ssl: {
     rejectUnauthorized: false
   }

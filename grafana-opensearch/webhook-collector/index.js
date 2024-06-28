@@ -6,12 +6,14 @@ import { Client } from '@opensearch-project/opensearch';
 // Set the host, protocol, port, and auth for the OpenSearch client
 // See documentation for the OpenSearch client for more information to configure different options
 // https://github.com/opensearch-project/opensearch-js
-var host = "opensearch-node1";
-var protocol = "https";
-var port = 9200;
-var auth = 'admin:ChangeMe123!';
+const host = `${process.env.OPENSEARCH_HOST}`;
+const protocol = `${process.env.OPENSEARCH_PROTOCOL}`;
+const port = `${process.env.OPENSEARCH_PORT}`;
+const auth = `${process.env.OPENSEARCH_USERNAME}:${process.env.OPENSEARCH_PASSWORD}`;
+
+// Forward the GitHub webhook to OpenSearch
 const client = new Client({
-  nodes: `${protocol}://${auth}@${host}:${port}`,
+  nodes: `${protocol}://${auth}@${host}:${port}`.replace(/"/g, ''),
   ssl: {
     rejectUnauthorized: false
   }
@@ -82,6 +84,7 @@ router.post('/', async (req, res) => {
             }
           }
         });
+
         // If the queueEvent is found, calculate the queue duration
         if (queueEvent.body.hits.total.value > 0) {
           const queued_at = await new Date(queueEvent.body.hits.hits[0]._source['@timestamp']);
@@ -112,6 +115,7 @@ router.post('/', async (req, res) => {
       index: index,
       body: body
     });
+
     res.send(response);
   } catch (error) {
     console.error(error);

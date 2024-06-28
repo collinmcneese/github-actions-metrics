@@ -81,6 +81,9 @@ services:
     environment:
       - OPENSEARCH_USERNAME="${OPENSEARCH_USERNAME}"
       - OPENSEARCH_PASSWORD="${OPENSEARCH_PASSWORD}"
+      - OPENSEARCH_HOST="${OPENSEARCH_HOST}"
+      - OPENSEARCH_PORT="${OPENSEARCH_PORT}"
+      - OPENSEARCH_PROTOCOL="${OPENSEARCH_PROTOCOL}"
     links:
       - opensearch-node1
       - opensearch-node2
@@ -101,6 +104,9 @@ services:
     environment:
       - OPENSEARCH_USERNAME="${OPENSEARCH_USERNAME}"
       - OPENSEARCH_PASSWORD="${OPENSEARCH_PASSWORD}"
+      - OPENSEARCH_HOST="${OPENSEARCH_HOST}"
+      - OPENSEARCH_PORT="${OPENSEARCH_PORT}"
+      - OPENSEARCH_PROTOCOL="${OPENSEARCH_PROTOCOL}"
     links:
       - opensearch-node1
       - opensearch-node2
