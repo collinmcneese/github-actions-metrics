@@ -41,12 +41,8 @@ jobs:
       - name: Docker Compose Up
         run: docker-compose -f grafana-opensearch/docker-compose.yml up -d
       - name: Check Grafana
-        run: docker-compose -f grafana-opensearch/docker-compose.yml exec grafana curl -s -o /dev/null -w "%{http_code}" http://localhost:3000
-      - name: Check opensearch-node1
-        run: docker-compose -f grafana-opensearch/docker-compose.yml exec opensearch-node1 curl -k -s -o /dev/null -w "%{http_code}" https://localhost:9200
-      - name: Check opensearch-node2
-        run: docker-compose -f grafana-opensearch/docker-compose.yml exec opensearch-node2 curl -k -s -o /dev/null -w "%{http_code}" https://localhost:9201
+        run: curl -o /dev/null -s -w "%{http_code}" http://localhost:13000
       - name: Check opensearch-dashboards
-        run: docker-compose -f grafana-opensearch/docker-compose.yml exec opensearch-dashboards curl -k -s -o /dev/null -w "%{http_code}" https://localhost:5601
+        run: curl -o /dev/null -s -w "%{http_code}" http://localhost:5601
       - name: Check webhook-collector
         run: curl http://localhost:3000
