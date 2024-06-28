@@ -1,0 +1,52 @@
+name: CI Grafana / OpenSearch
+
+on:
+  pull_request:
+    paths:
+      - 'grafana-opensearch/**'
+      - '.github/workflows/ci-grafana-opensearch.yml'
+
+jobs:
+  lint:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: SuperLinter
+        uses: github/super-linter@v4
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          fail_on_error: false
+          validate_all_codebase: true
+          debug: false
+          linter: 'eslint'
+          eslint: 'true'
+          eslint_args: '--ext .js,.ts,.tsx'
+          eslint_ignore: 'node_modules'
+          eslint_config: '.eslintrc.js'
+          eslint_extensions: '.js,.ts,.tsx'
+          eslint_glob: 'grafana-opensearch/**'
+
+  build-and-test:
+    runs-on: ubuntu-latest
+    env:
+      OPENSEARCH_HOST: opensearch-node1
+      OPENSEARCH_PORT: 9200
+      OPENSEARCH_PROTOCOL: 'https'
+      OPENSEARCH_USERNAME: 'admin'
+      OPENSEARCH_PASSWORD: 'ChangeMe123!'
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Docker Compose Up
+        run: docker-compose -f grafana-opensearch/docker-compose.yml up -d
+      - name: Check Grafana
+        run: docker-compose -f grafana-opensearch/docker-compose.yml exec grafana curl -s -o /dev/null -w "%{http_code}" http://localhost:3000
+      - name: Check opensearch-node1
+        run: docker-compose -f grafana-opensearch/docker-compose.yml exec opensearch-node1 curl -k -s -o /dev/null -w "%{http_code}" https://localhost:9200
+      - name: Check opensearch-node2
+        run: docker-compose -f grafana-opensearch/docker-compose.yml exec opensearch-node2 curl -k -s -o /dev/null -w "%{http_code}" https://localhost:9201
+      - name: Check opensearch-dashboards
+        run: docker-compose -f grafana-opensearch/docker-compose.yml exec opensearch-dashboards curl -k -s -o /dev/null -w "%{http_code}" https://localhost:5601
+      - name: Check webhook-collector
+        run: curl http://localhost:3000
