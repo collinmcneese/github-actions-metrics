@@ -5,7 +5,8 @@
     "container-webhook": "nodemon dist/index.cjs",
     "container-seed": "node dist/seed-data.cjs",
     "seed": "node seed-data.js",
-    "build": "esbuild index.js --bundle --minify --platform=node --outfile=dist/index.cjs ; esbuild seed-data.js --bundle --minify --platform=node --outfile=dist/seed-data.cjs"
+    "build": "esbuild index.js --bundle --minify --platform=node --outfile=dist/index.cjs ; esbuild seed-data.js --bundle --minify --platform=node --outfile=dist/seed-data.cjs",
+    "test": "eslint"
   },
   "name": "webhook-collector-opensearch",
   "description": "A simple webhook collector for OpenSearch",
