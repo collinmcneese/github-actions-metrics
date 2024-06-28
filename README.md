@@ -11,6 +11,9 @@ Repository with Example references for GitHub Actions Metrics visualizations
 
 This directory contains the necessary configuration and code to set up a Grafana dashboard with OpenSearch as the datasource. It's designed to collect and visualize data from webhooks using OpenSearch and Grafana.
 
+![Grafana Dashboard Part 1](./grafana-opensearch/images/workflows-overview-1.png)
+![Grafana Dashboard Part 2](./grafana-opensearch/images/workflows-overview-2.png)
+
 ### Contents
 
 - **`.env` and `.env.example`**: Environment variable files. Copy `.env.example` to `.env` and update the values according to your OpenSearch setup.
