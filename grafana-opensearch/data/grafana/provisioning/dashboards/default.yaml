@@ -1,0 +1,9 @@
+# This file is used for the Grafana provisioning feature to automatically load dashboards into Grafana
+apiVersion: 1
+
+providers:
+  - name: Default
+    type: file
+    options:
+      path:
+        '/etc/grafana/provisioning/dashboards/workflows-overview.json'

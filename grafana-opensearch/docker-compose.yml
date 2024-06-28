@@ -1,0 +1,133 @@
+services:
+  opensearch-node1:
+    image: opensearchproject/opensearch:2.14.0
+    container_name: opensearch-node1
+    environment:
+      - cluster.name=opensearch-cluster
+      - node.name=opensearch-node1
+      - discovery.seed_hosts=opensearch-node1,opensearch-node2
+      - cluster.initial_cluster_manager_nodes=opensearch-node1,opensearch-node2
+      - bootstrap.memory_lock=true
+      - OPENSEARCH_INITIAL_ADMIN_PASSWORD=${OPENSEARCH_PASSWORD}
+    healthcheck:
+      test: ["CMD-SHELL", "curl -k -u ${OPENSEARCH_USERNAME}:${OPENSEARCH_PASSWORD} --silent --fail https://localhost:9200/_cluster/health || exit 1"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+    ulimits:
+      memlock:
+        soft: -1
+        hard: -1
+      nofile:
+        soft: 65536
+        hard: 65536
+    ports:
+      - 9200:9200
+      - 9600:9600
+
+  opensearch-node2:
+    image: opensearchproject/opensearch:2.14.0
+    container_name: opensearch-node2
+    environment:
+      - cluster.name=opensearch-cluster
+      - node.name=opensearch-node2
+      - discovery.seed_hosts=opensearch-node1,opensearch-node2
+      - cluster.initial_cluster_manager_nodes=opensearch-node1,opensearch-node2
+      - bootstrap.memory_lock=true
+      - OPENSEARCH_INITIAL_ADMIN_PASSWORD=${OPENSEARCH_PASSWORD}
+    healthcheck:
+      test: ["CMD-SHELL", "curl -k -u ${OPENSEARCH_USERNAME}:${OPENSEARCH_PASSWORD} --silent --fail https://localhost:9200/_cluster/health || exit 1"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+    ulimits:
+      memlock:
+        soft: -1
+        hard: -1
+      nofile:
+        soft: 65536
+        hard: 65536
+
+  opensearch-dashboards:
+    image: opensearchproject/opensearch-dashboards:2.14.0
+    ports:
+      - 5601:5601
+    expose:
+      - 5601
+    environment:
+      OPENSEARCH_HOSTS: '["https://opensearch-node1:9200","https://opensearch-node2:9200"]'
+      OPENSEARCH_INITIAL_ADMIN_PASSWORD: ${OPENSEARCH_PASSWORD}
+    depends_on:
+      opensearch-node1:
+        condition: service_healthy
+      opensearch-node2:
+        condition: service_healthy
+
+  webhook-collector:
+    platform: linux/amd64
+    container_name: webhook-collector
+    image: node:20-alpine
+    ports:
+      - 3000:3000
+    working_dir: /app
+    volumes:
+      - ./webhook-collector:/app:ro
+    command: npm run dev
+    depends_on:
+      opensearch-node1:
+        condition: service_healthy
+      opensearch-node2:
+        condition: service_healthy
+    environment:
+      - OPENSEARCH_USERNAME="${OPENSEARCH_USERNAME}"
+      - OPENSEARCH_PASSWORD="${OPENSEARCH_PASSWORD}"
+      - OPENSEARCH_HOST="${OPENSEARCH_HOST}"
+      - OPENSEARCH_PORT="${OPENSEARCH_PORT}"
+      - OPENSEARCH_PROTOCOL="${OPENSEARCH_PROTOCOL}"
+    links:
+      - opensearch-node1
+      - opensearch-node2
+
+  seed:
+    platform: linux/amd64
+    container_name: seed
+    image: node:20-alpine
+    working_dir: /app
+    volumes:
+      - ./webhook-collector:/app:ro
+    command: npm run seed
+    depends_on:
+      opensearch-node1:
+        condition: service_healthy
+      opensearch-node2:
+        condition: service_healthy
+    environment:
+      - OPENSEARCH_USERNAME="${OPENSEARCH_USERNAME}"
+      - OPENSEARCH_PASSWORD="${OPENSEARCH_PASSWORD}"
+      - OPENSEARCH_HOST="${OPENSEARCH_HOST}"
+      - OPENSEARCH_PORT="${OPENSEARCH_PORT}"
+      - OPENSEARCH_PROTOCOL="${OPENSEARCH_PROTOCOL}"
+    links:
+      - opensearch-node1
+      - opensearch-node2
+
+  grafana:
+    platform: linux/amd64
+    container_name: grafana
+    image: grafana/grafana-oss
+    depends_on:
+      opensearch-node1:
+        condition: service_healthy
+      opensearch-node2:
+        condition: service_healthy
+    links:
+    - opensearch-node1
+    - opensearch-node2
+    environment:
+      - GF_INSTALL_PLUGINS=grafana-opensearch-datasource
+      - OPENSEARCH_PASSWORD="${OPENSEARCH_PASSWORD}"
+    ports:
+      - 25826:25826
+      - 13000:3000
+    volumes:
+      - ./data/grafana/provisioning:/etc/grafana/provisioning
