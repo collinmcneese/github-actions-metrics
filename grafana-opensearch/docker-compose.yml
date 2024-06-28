@@ -72,7 +72,7 @@ services:
     working_dir: /app
     volumes:
       - ./webhook-collector:/app:ro
-    command: npm run dev
+    command: npm run container-webhook
     depends_on:
       opensearch-node1:
         condition: service_healthy
@@ -95,7 +95,7 @@ services:
     working_dir: /app
     volumes:
       - ./webhook-collector:/app:ro
-    command: npm run seed
+    command: npm run container-seed
     depends_on:
       opensearch-node1:
         condition: service_healthy
