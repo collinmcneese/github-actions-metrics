@@ -1,9 +1,20 @@
 # github-actions-metrics
 
-Repository with Example references for GitHub Actions Metrics visualizations
+Repository with Example references for GitHub Actions Metrics visualizations.
 
 > [!NOTE]
 > The content in this repository is for demonstration purposes only and should not be used in a production environment directly.
+
+- [github-actions-metrics](#github-actions-metrics)
+  - [Grafana \& OpenSearch](#grafana--opensearch)
+    - [Contents](#contents)
+    - [Dependencies](#dependencies)
+    - [Getting Started](#getting-started)
+    - [Webhook Collector](#webhook-collector)
+      - [Features](#features)
+      - [How It Works](#how-it-works)
+      - [Setup and Configuration](#setup-and-configuration)
+      - [Security Considerations](#security-considerations)
 
 ## Grafana & OpenSearch
 
@@ -26,8 +37,9 @@ This directory contains the necessary configuration and code to set up a Grafana
   - **`package.json`**: Defines the project dependencies and scripts.
   - **`seed-data.js`**: A script to seed the OpenSearch database with initial data.
   - **`.gitignore`**: Git ignore file for Node.js projects.
+  - **`dist/`**: Contains the compiled JavaScript files, used by containerized deployments from docker-compose.
 
-## Dependencies
+### Dependencies
 
 - **Docker and Docker Compose**: Required to run the services as defined in `docker-compose.yml`.
 - **Node.js and npm**: Required for the webhook collector service. The project is tested with Node.js version `>=20.0.0` and npm version `>=8.0.0`.
@@ -46,7 +58,7 @@ For more detailed instructions and configuration options, refer to the individua
 
 This Node.js application serves as a bridge between GitHub webhooks and OpenSearch, allowing for the ingestion and analysis of GitHub event data within OpenSearch. It uses Express.js to handle incoming webhook requests and the OpenSearch JavaScript client to index these events.
 
-## Features
+#### Features
 
 - **Express Server**: Sets up an HTTP server that listens for incoming webhook requests from GitHub.
 - **OpenSearch Integration**: Utilizes the OpenSearch JavaScript client to forward these events into an OpenSearch cluster for storage and analysis.
@@ -54,7 +66,7 @@ This Node.js application serves as a bridge between GitHub webhooks and OpenSear
 - **Data Enrichment**: Enhances the incoming webhook data with additional metrics such as event duration and queue duration before indexing.
 - **Error Handling**: Implements basic error handling for both the Express server and the OpenSearch client operations.
 
-## How It Works
+#### How It Works
 
 1. **Server Initialization**: An Express server is initialized and configured to listen for incoming HTTP requests on port 3000.
 2. **Route Handling**:
@@ -67,7 +79,7 @@ This Node.js application serves as a bridge between GitHub webhooks and OpenSear
 4. **Indexing in OpenSearch**: The enriched event data is then indexed into OpenSearch using the determined index name.
 5. **Error Handling**: Errors during the request handling or indexing process are caught and logged, and an appropriate HTTP response is returned to the caller.
 
-## Setup and Configuration
+#### Setup and Configuration
 
 - **Dependencies**: Requires Node.js, npm, and access to an OpenSearch cluster.
 - **Environment Variables**: Set the following environment variables to configure the OpenSearch connection:
@@ -78,7 +90,7 @@ This Node.js application serves as a bridge between GitHub webhooks and OpenSear
   - `OPENSEARCH_PASSWORD`: The password for OpenSearch authentication.
 - **Running the Server**: Execute `node index.js` to start the server. Ensure that the environment variables are set before starting the server.
 
-## Security Considerations
+#### Security Considerations
 
 - The server does not implement authentication for incoming webhook requests.
 - The OpenSearch client is configured with `rejectUnauthorized: false` for SSL, which is only for development purposes.
