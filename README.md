@@ -8,8 +8,7 @@ Repository with Example references for GitHub Actions Metrics visualizations.
 - [github-actions-metrics](#github-actions-metrics)
   - [Grafana \& OpenSearch](#grafana--opensearch)
     - [Contents](#contents)
-    - [Dependencies](#dependencies)
-    - [Getting Started](#getting-started)
+    - [Quick Start](#quick-start)
     - [Webhook Collector](#webhook-collector)
       - [Features](#features)
       - [How It Works](#how-it-works)
@@ -39,18 +38,18 @@ This directory contains the necessary configuration and code to set up a Grafana
   - **`.gitignore`**: Git ignore file for Node.js projects.
   - **`dist/`**: Contains the compiled JavaScript files, used by containerized deployments from docker-compose.
 
-### Dependencies
-
-- **Docker and Docker Compose**: Required to run the services as defined in `docker-compose.yml`.
-- **Node.js and npm**: Required for the webhook collector service. The project is tested with Node.js version `>=20.0.0` and npm version `>=8.0.0`.
-
-### Getting Started
+### Quick Start
 
 1. Ensure Docker, Docker Compose, Node.js, and npm are installed on your system.
+   1. Node.js and npm are only rerquired if you plan to run the webhook collector service outside of Docker or make development changes.
 2. Copy `grafana-opensearch/.env.example` to `grafana-opensearch/.env` and update the environment variables to match your OpenSearch setup.
 3. From the `grafana-opensearch` directory, run `docker-compose up` to start the OpenSearch cluster, Grafana, and the webhook collector service.
-4. Access Grafana at `http://localhost:3000` (default credentials are admin/admin, but it's recommended to change these).
-5. To seed the OpenSearch database with initial data, run `npm run seed` from within the `webhook-collector` directory.
+   1. This will automatically run the `seed` container once to seed the OpenSearch database with initial data.
+4. Access Grafana at `http://localhost:13000` (default credentials are admin/admin, but it's recommended to change these).
+5. To seed the OpenSearch database with more data, the `seed` container can be run manually using `docker-compose run seed` more times.
+6. To collect real data, setup webhooks from GitHub for `workflow_run` and `workflow_job` events to point to the webhook collector service.
+   1. The webhook collector service listens on port 3000 by default.  Tools such as [smee.io](https://smee.io/) can be used to forward GitHub webhooks to the service.
+   2. The webhook collector service will automatically index these events into OpenSearch for visualization in Grafana.
 
 For more detailed instructions and configuration options, refer to the individual README files within each subdirectory.
 
