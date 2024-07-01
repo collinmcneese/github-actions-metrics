@@ -103,6 +103,7 @@ services:
       opensearch-node2:
         condition: service_healthy
     environment:
+      - SEED_DATA=${SEED_DATA}
       - TARGET_TYPE=opensearch
       - OPENSEARCH_USERNAME="${OPENSEARCH_USERNAME}"
       - OPENSEARCH_PASSWORD="${OPENSEARCH_PASSWORD}"

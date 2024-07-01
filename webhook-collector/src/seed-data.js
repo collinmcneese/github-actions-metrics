@@ -117,12 +117,17 @@ async function seed(timestamp) {
   }
 };
 
-seed(new Date().toISOString());
-// seed from 1 hour ago
-seed(new Date(Date.now() - 60 * 60 * 1000).toISOString());
-// seed from 2 hours ago
-seed(new Date(Date.now() - 2 * 60 * 60 * 1000).toISOString());
-// seed from 3 hours ago
-seed(new Date(Date.now() - 3 * 60 * 60 * 1000).toISOString());
-// seed from 4 hours ago
-seed(new Date(Date.now() - 4 * 60 * 60 * 1000).toISOString());
+if (process.env.SEED_DATA == 'true') {
+  seed(new Date().toISOString());
+  // seed from 1 hour ago
+  seed(new Date(Date.now() - 60 * 60 * 1000).toISOString());
+  // seed from 2 hours ago
+  seed(new Date(Date.now() - 2 * 60 * 60 * 1000).toISOString());
+  // seed from 3 hours ago
+  seed(new Date(Date.now() - 3 * 60 * 60 * 1000).toISOString());
+  // seed from 4 hours ago
+  seed(new Date(Date.now() - 4 * 60 * 60 * 1000).toISOString());
+} else {
+  console.log('Skipping data seeding');
+}
+export default { seed };
