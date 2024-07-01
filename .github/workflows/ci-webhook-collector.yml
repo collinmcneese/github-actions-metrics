@@ -4,6 +4,7 @@ on:
   pull_request:
     paths:
       - 'webhook-collector/**/*'
+      - '.github/workflows/ci-webhook-collector.yml'
 
 jobs:
   build-and-test:
@@ -38,6 +39,10 @@ jobs:
           if [ "$(git diff --ignore-space-at-eol dist/ | wc -l)" -gt "0" ]; then
             echo "Detected uncommitted changes after build.  See status below:"
             git diff
-            exit 1
+            npm run build
+            git --config user.name='github-actions[bot]' --config user.email='github-actions[bot]@users.noreply.github.com'
+            git add dist
+            git commit -m "chore: update dist"
+            git push
           fi
         id: diff
