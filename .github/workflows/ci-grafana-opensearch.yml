@@ -26,11 +26,12 @@ jobs:
           eslint_ignore: 'node_modules'
           eslint_config: '.eslintrc.js'
           eslint_extensions: '.js,.ts,.tsx'
-          eslint_glob: 'grafana-opensearch/**'
+          eslint_glob: 'webhook-collector/**'
 
   build-and-test:
     runs-on: ubuntu-latest
     env:
+      TARGET_TYPE: opensearch
       OPENSEARCH_HOST: opensearch-node1
       OPENSEARCH_PORT: 9200
       OPENSEARCH_PROTOCOL: 'https'

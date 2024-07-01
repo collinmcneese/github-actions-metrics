@@ -1,4 +1,3 @@
-// express API to forward GitHub webhooks to OpenSearch
 import express from 'express';
 const router = express.Router();
 import { Client } from '@opensearch-project/opensearch';
@@ -123,10 +122,4 @@ router.post('/', async (req, res) => {
   }
 });
 
-
-const app = express();
-app.use(express.json());
-app.use(router);
-app.listen(3000, () => {
-  console.log('Forwarding server listening on port 3000');
-});
+export default { router };

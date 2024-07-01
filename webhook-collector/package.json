@@ -1,11 +1,11 @@
 {
   "scripts": {
-    "start": "node index.js",
-    "dev": "nodemon index.js",
+    "start": "node dist/index.js",
+    "dev": "nodemon src/index.js",
     "container-webhook": "nodemon dist/index.cjs",
     "container-seed": "node dist/seed-data.cjs",
-    "seed": "node seed-data.js",
-    "build": "esbuild index.js --bundle --minify --platform=node --outfile=dist/index.cjs ; esbuild seed-data.js --bundle --minify --platform=node --outfile=dist/seed-data.cjs",
+    "seed": "node src/seed-data.js",
+    "build": "./build.sh",
     "test": "eslint"
   },
   "name": "webhook-collector-opensearch",
