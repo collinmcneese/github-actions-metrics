@@ -26,4 +26,3 @@ jobs:
           VALIDATE_JAVASCRIPT_STANDARD: true
           VALIDATE_JSON: true
           VALIDATE_MARKDOWN: true
-          JAVASCRIPT_ES_CONFIG_FILE: webhook-collector/eslint.config.js
