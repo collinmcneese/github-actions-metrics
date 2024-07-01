@@ -7,27 +7,6 @@ on:
       - '.github/workflows/ci-grafana-opensearch.yml'
 
 jobs:
-  lint:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v4
-      - name: SuperLinter
-        uses: github/super-linter@v6
-        continue-on-error: true
-        with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          fail_on_error: false
-          validate_all_codebase: true
-          debug: false
-          linter: 'eslint'
-          eslint: 'true'
-          eslint_args: '--ext .js,.ts,.tsx'
-          eslint_ignore: 'node_modules'
-          eslint_config: '.eslintrc.js'
-          eslint_extensions: '.js,.ts,.tsx'
-          eslint_glob: 'webhook-collector/**'
-
   build-and-test:
     runs-on: ubuntu-latest
     env:

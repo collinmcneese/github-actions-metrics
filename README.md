@@ -1,4 +1,8 @@
-# github-actions-metrics
+[![CodeQL](https://github.com/collinmcneese/github-actions-metrics/actions/workflows/github-code-scanning/codeql/badge.svg)](https://github.com/collinmcneese/github-actions-metrics/actions/workflows/github-code-scanning/codeql)
+[![CI Webhook Collector](https://github.com/collinmcneese/github-actions-metrics/actions/workflows/ci-webhook-collector.yml/badge.svg)](https://github.com/collinmcneese/github-actions-metrics/actions/workflows/ci-webhook-collector.yml)
+[![CI Grafana / OpenSearch](https://github.com/collinmcneese/github-actions-metrics/actions/workflows/ci-grafana-opensearch.yml/badge.svg)](https://github.com/collinmcneese/github-actions-metrics/actions/workflows/ci-grafana-opensearch.yml)
+
+# GitHub Actions Metrics
 
 Repository with Example references for GitHub Actions Metrics visualizations.
 
