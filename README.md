@@ -37,6 +37,14 @@ This directory contains the necessary configuration and code to set up a Grafana
 1. Ensure Docker, Docker Compose, Node.js, and npm are installed on your system.
    1. Node.js and npm are only rerquired if you plan to run the webhook collector service outside of Docker or make development changes.
 2. Copy `grafana-opensearch/.env.example` to `grafana-opensearch/.env` and update the environment variables to match your OpenSearch setup.
+   1. Environment variables:
+   2. `OPENSEARCH_HOST`: The hostname of the OpenSearch cluster.
+   3. `OPENSEARCH_PROTOCOL`: The protocol (`http` or `https`) to use.
+   4. `OPENSEARCH_PORT`: The port on which the OpenSearch cluster is accessible.
+   5. `OPENSEARCH_USERNAME`: The username for OpenSearch authentication.
+   6. `OPENSEARCH_PASSWORD`: The password for OpenSearch authentication.
+   7. `TARGET_TYPE`: The backend type to use for storing the data. Currently, only `opensearch` is supported.
+   8. `SEED_DATA`: `true` or `false` to seed the OpenSearch database with initial sample data.
 3. From the `grafana-opensearch` directory, run `docker-compose up` to start the OpenSearch cluster, Grafana, and the webhook collector service.
    1. This will automatically run the `seed` container once to seed the OpenSearch database with initial data.
 4. Access Grafana at `http://localhost:13000` (default credentials are admin/admin, but it's recommended to change these).

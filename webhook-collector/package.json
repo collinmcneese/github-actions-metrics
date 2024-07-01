@@ -6,7 +6,7 @@
     "container-seed": "node dist/seed-data.cjs",
     "seed": "node src/seed-data.js",
     "build": "./build.sh",
-    "test": "eslint"
+    "test": "eslint ; mocha __test__/**/*.test.js"
   },
   "name": "webhook-collector-opensearch",
   "description": "A simple webhook collector for OpenSearch",
@@ -26,7 +26,11 @@
     "smee-client": "^2.0.1"
   },
   "devDependencies": {
+    "chai": "^5.1.1",
+    "chai-http": "^5.0.0",
     "esbuild": "^0.21.5",
-    "eslint": "^9.5.0"
+    "eslint": "^9.5.0",
+    "mocha": "^10.5.2",
+    "sinon": "^18.0.0"
   }
 }
