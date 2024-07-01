@@ -5,15 +5,14 @@ Repository with Example references for GitHub Actions Metrics visualizations.
 > [!NOTE]
 > The content in this repository is for demonstration purposes only and should not be used in a production environment directly.
 
-- [github-actions-metrics](#github-actions-metrics)
-  - [Grafana \& OpenSearch](#grafana--opensearch)
-    - [Contents](#contents)
-    - [Quick Start](#quick-start)
-    - [Webhook Collector](#webhook-collector)
-      - [Features](#features)
-      - [How It Works](#how-it-works)
-      - [Setup and Configuration](#setup-and-configuration)
-      - [Security Considerations](#security-considerations)
+- [Grafana \& OpenSearch](#grafana--opensearch)
+  - [Contents](#contents)
+  - [Quick Start](#quick-start)
+- [Webhook Collector](#webhook-collector)
+  - [Webhook Collector Contents](#webhook-collector-contents)
+  - [Webhook Collector Functionality](#webhook-collector-functionality)
+  - [Webhook Collector Setup and Configuration](#webhook-collector-setup-and-configuration)
+- [Security Considerations](#security-considerations)
 
 ## Grafana & OpenSearch
 
@@ -31,12 +30,7 @@ This directory contains the necessary configuration and code to set up a Grafana
 - **`data/grafana/provisioning`**: Contains Grafana provisioning files for datasources and dashboards, allowing Grafana to automatically load the OpenSearch datasource and predefined dashboards on startup.
   - **`dashboards/default.yaml`**: Configuration for dashboard provisioning.
   - **`datasources/default.yaml`**: Configuration for datasource provisioning, including the OpenSearch datasource.
-- **`webhook-collector`**: A simple Node.js application that collects GitHub webhooks and stores them in OpenSearch.
-  - **`index.js`**: The main application file.
-  - **`package.json`**: Defines the project dependencies and scripts.
-  - **`seed-data.js`**: A script to seed the OpenSearch database with initial data.
-  - **`.gitignore`**: Git ignore file for Node.js projects.
-  - **`dist/`**: Contains the compiled JavaScript files, used by containerized deployments from docker-compose.
+- Uses the [./webhook-collector](./webhook-collector) service to collect GitHub webhooks and store them in OpenSearch, configured with environment variables in the [./grafa-opensearch/.env](./grafana-opensearch/.env) file.
 
 ### Quick Start
 
@@ -53,43 +47,50 @@ This directory contains the necessary configuration and code to set up a Grafana
 
 For more detailed instructions and configuration options, refer to the individual README files within each subdirectory.
 
-### Webhook Collector
+## Webhook Collector
 
-This Node.js application serves as a bridge between GitHub webhooks and OpenSearch, allowing for the ingestion and analysis of GitHub event data within OpenSearch. It uses Express.js to handle incoming webhook requests and the OpenSearch JavaScript client to index these events.
+This Node.js application serves as a bridge between GitHub webhooks and backend data stores.  Different data store backends are configured as part of the application and specified with the `TARGET_TYPE` environment variable.
 
-#### Features
+Supported backends include:
 
-- **Express Server**: Sets up an HTTP server that listens for incoming webhook requests from GitHub.
-- **OpenSearch Integration**: Utilizes the OpenSearch JavaScript client to forward these events into an OpenSearch cluster for storage and analysis.
-- **Dynamic Indexing**: Determines the appropriate OpenSearch index (`workflow_run` or `workflow_job`) based on the type of GitHub event.
-- **Data Enrichment**: Enhances the incoming webhook data with additional metrics such as event duration and queue duration before indexing.
-- **Error Handling**: Implements basic error handling for both the Express server and the OpenSearch client operations.
+- `opensearch`: Indexes incoming webhook data into an OpenSearch cluster.
 
-#### How It Works
+### Webhook Collector Contents
+
+- **`webhook-collector`**: A simple Node.js application that collects GitHub webhooks and stores them in OpenSearch.
+  - **`src/index.js`**: The main application file.
+  - **`src/opensearch.js`**: The OpenSearch backend module.
+  - **`package.json`**: Defines the project dependencies and scripts.
+  - **`src/seed-data.js`**: A script to seed the OpenSearch database with initial data.
+  - **`.gitignore`**: Git ignore file for Node.js projects.
+  - **`dist/`**: Contains the compiled JavaScript files, used by containerized deployments from docker-compose.
+
+### Webhook Collector Functionality
 
 1. **Server Initialization**: An Express server is initialized and configured to listen for incoming HTTP requests on port 3000.
 2. **Route Handling**:
+   - Route data is configured in the target module, which is selected based on the `TARGET_TYPE` environment variable.
    - A GET route at the root (`/`) that simply returns a server status message.
    - A POST route at the root (`/`) designed to receive GitHub webhook payloads.
 3. **Webhook Processing**:
-   - Upon receiving a webhook, the application determines the event type and selects the appropriate OpenSearch index.
    - For `workflow_run` and `workflow_job` events, it calculates the duration of the event. For `workflow_job` events, it also calculates the queue duration and the duration of each step within the job.
    - Adds a timestamp to the event data.
-4. **Indexing in OpenSearch**: The enriched event data is then indexed into OpenSearch using the determined index name.
-5. **Error Handling**: Errors during the request handling or indexing process are caught and logged, and an appropriate HTTP response is returned to the caller.
+   - Stores the event data in the configured backend.
 
-#### Setup and Configuration
+### Webhook Collector Setup and Configuration
 
-- **Dependencies**: Requires Node.js, npm, and access to an OpenSearch cluster.
-- **Environment Variables**: Set the following environment variables to configure the OpenSearch connection:
-  - `OPENSEARCH_HOST`: The hostname of the OpenSearch cluster.
-  - `OPENSEARCH_PROTOCOL`: The protocol (`http` or `https`) to use.
-  - `OPENSEARCH_PORT`: The port on which the OpenSearch cluster is accessible.
-  - `OPENSEARCH_USERNAME`: The username for OpenSearch authentication.
-  - `OPENSEARCH_PASSWORD`: The password for OpenSearch authentication.
-- **Running the Server**: Execute `node index.js` to start the server. Ensure that the environment variables are set before starting the server.
+- **Dependencies**: Requires Node.js, npm, and access to a backend data store.
+- **Environment Variables**: Set the following environment variables to configure application:
+  - `TARGET_TYPE`: The backend type to use for storing the data. Currently, only `opensearch` is supported.
+  - OpenSearch Options:
+    - `OPENSEARCH_HOST`: The hostname of the OpenSearch cluster.
+    - `OPENSEARCH_PROTOCOL`: The protocol (`http` or `https`) to use.
+    - `OPENSEARCH_PORT`: The port on which the OpenSearch cluster is accessible.
+    - `OPENSEARCH_USERNAME`: The username for OpenSearch authentication.
+    - `OPENSEARCH_PASSWORD`: The password for OpenSearch authentication.
+- **Running the Server**: Execute `npm run dev` to start the server locally for development. Ensure that the environment variables are set before starting the server.
 
-#### Security Considerations
+## Security Considerations
 
-- The server does not implement authentication for incoming webhook requests.
+- The webhook-collector server does not implement authentication for incoming webhook requests.
 - The OpenSearch client is configured with `rejectUnauthorized: false` for SSL, which is only for development purposes.
