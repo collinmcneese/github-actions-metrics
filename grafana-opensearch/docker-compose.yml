@@ -26,7 +26,7 @@ services:
       - 9600:9600
 
   opensearch-node2:
-    image: opensearchproject/opensearch:2.14.0
+    image: opensearchproject/opensearch:${OPENSEARCH_VERSION}
     container_name: opensearch-node2
     environment:
       - cluster.name=opensearch-cluster
@@ -49,7 +49,7 @@ services:
         hard: 65536
 
   opensearch-dashboards:
-    image: opensearchproject/opensearch-dashboards:2.14.0
+    image: opensearchproject/opensearch-dashboards:${OPENSEARCH_VERSION}
     ports:
       - 5601:5601
     expose:
@@ -107,6 +107,7 @@ services:
       - OPENSEARCH_HOST="${OPENSEARCH_HOST}"
       - OPENSEARCH_PORT="${OPENSEARCH_PORT}"
       - OPENSEARCH_PROTOCOL="${OPENSEARCH_PROTOCOL}"
+      - OPENSEARCH_VERSION="${OPENSEARCH_VERSION}"
     links:
       - opensearch-node1
       - opensearch-node2
@@ -125,7 +126,13 @@ services:
     - opensearch-node2
     environment:
       - GF_INSTALL_PLUGINS=grafana-opensearch-datasource
-      - OPENSEARCH_PASSWORD="${OPENSEARCH_PASSWORD}"
+      - OPENSEARCH_USERNAME=${OPENSEARCH_USERNAME}
+      - OPENSEARCH_PASSWORD=${OPENSEARCH_PASSWORD}
+      - OPENSEARCH_HOST=${OPENSEARCH_HOST}
+      - OPENSEARCH_PORT=${OPENSEARCH_PORT}
+      - OPENSEARCH_PROTOCOL=${OPENSEARCH_PROTOCOL}
+      - OPENSEARCH_VERSION=${OPENSEARCH_VERSION}
+      - GRAFANA_OPENSEARCH_DATASOURCE_URL=${OPENSEARCH_PROTOCOL}://${OPENSEARCH_HOST}:${OPENSEARCH_PORT}
     ports:
       - 25826:25826
       - 13000:3000
