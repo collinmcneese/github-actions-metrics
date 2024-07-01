@@ -71,7 +71,7 @@ services:
       - 3000:3000
     working_dir: /app
     volumes:
-      - ./webhook-collector:/app:ro
+      - ../webhook-collector:/app:ro
     command: npm run container-webhook
     depends_on:
       opensearch-node1:
@@ -79,6 +79,7 @@ services:
       opensearch-node2:
         condition: service_healthy
     environment:
+      - TARGET_TYPE=opensearch
       - OPENSEARCH_USERNAME="${OPENSEARCH_USERNAME}"
       - OPENSEARCH_PASSWORD="${OPENSEARCH_PASSWORD}"
       - OPENSEARCH_HOST="${OPENSEARCH_HOST}"
@@ -94,7 +95,7 @@ services:
     image: node:20-alpine
     working_dir: /app
     volumes:
-      - ./webhook-collector:/app:ro
+      - ../webhook-collector:/app:ro
     command: npm run container-seed
     depends_on:
       opensearch-node1:
@@ -102,6 +103,7 @@ services:
       opensearch-node2:
         condition: service_healthy
     environment:
+      - TARGET_TYPE=opensearch
       - OPENSEARCH_USERNAME="${OPENSEARCH_USERNAME}"
       - OPENSEARCH_PASSWORD="${OPENSEARCH_PASSWORD}"
       - OPENSEARCH_HOST="${OPENSEARCH_HOST}"
