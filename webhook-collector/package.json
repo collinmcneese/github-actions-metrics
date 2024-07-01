@@ -8,8 +8,8 @@
     "build": "./build.sh",
     "test": "eslint ; mocha __test__/**/*.test.js"
   },
-  "name": "webhook-collector-opensearch",
-  "description": "A simple webhook collector for OpenSearch",
+  "name": "webhook-collector",
+  "description": "A simple webhook collector for GitHub webhook events",
   "version": "0.1.0",
   "license": "ISC",
   "engines": {
