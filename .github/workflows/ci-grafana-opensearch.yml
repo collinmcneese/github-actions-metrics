@@ -13,7 +13,7 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
       - name: SuperLinter
-        uses: github/super-linter@v4
+        uses: github/super-linter@v6
         continue-on-error: true
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
