@@ -4,33 +4,33 @@ datasources:
   version: 1
   type: grafana-opensearch-datasource
   access: proxy
-  url: https://opensearch-node1:9200
+  url: ${GRAFANA_OPENSEARCH_DATASOURCE_URL}
   basicAuth: true
-  basicAuthUser: admin
+  basicAuthUser: ${OPENSEARCH_USERNAME}
   uid: grafanaOSDSworkflowJob
   secureJsonData:
-    basicAuthPassword: ChangeMe123!
+    basicAuthPassword: ${OPENSEARCH_PASSWORD}
   jsonData:
     tlsSkipVerify: true
     database: 'workflow_job'
     timeField: '@timestamp'
-    version: '2.14.0'
+    version: ${OPENSEARCH_VERSION}
     flavor: 'opensearch'
     uid: 'workflow_job'
 - name: grafana-opensearch-datasource-workflow_run
   version: 1
   type: grafana-opensearch-datasource
   access: proxy
-  url: https://opensearch-node1:9200
+  url: ${GRAFANA_OPENSEARCH_DATASOURCE_URL}
   basicAuth: true
-  basicAuthUser: admin
+  basicAuthUser: ${OPENSEARCH_USERNAME}
   uid: grafanaOSDSworkflowRun
   secureJsonData:
-    basicAuthPassword: ChangeMe123!
+    basicAuthPassword: ${OPENSEARCH_PASSWORD}
   jsonData:
     tlsSkipVerify: true
     database: 'workflow_run'
     timeField: '@timestamp'
-    version: '2.14.0'
+    version: ${OPENSEARCH_VERSION}
     flavor: 'opensearch'
     uid: 'workflow_run'
