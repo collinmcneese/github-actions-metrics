@@ -22,7 +22,7 @@ const numWorkflowRuns = 500;
 // Seed the opensearch index with data
 async function seed(timestamp) {
   for (let i = 0; i < numWorkflowRuns; i++) {
-    console.log(`Seeding data for iteration ${i}`);
+    // console.log(`Seeding data for iteration ${i}`);
     // Add a random splay to the timestamp +/- 20 minutes
     timestamp = new Date(new Date(timestamp).getTime() + Math.floor(Math.random() * 20 * 60 * 1000)).toISOString();
     // Create a random workflow run
