@@ -22,7 +22,7 @@ const numWorkflowRuns = 500;
 // Seed the opensearch index with data
 async function seed(timestamp) {
   for (let i = 0; i < numWorkflowRuns; i++) {
-    console.log(`Seeding data for iteration ${i}`);
+    const workflowRunId = Math.floor(Math.random() * 1000000);
     // Add a random splay to the timestamp +/- 20 minutes
     timestamp = new Date(new Date(timestamp).getTime() + Math.floor(Math.random() * 20 * 60 * 1000)).toISOString();
     // Create a random workflow run
@@ -37,7 +37,7 @@ async function seed(timestamp) {
         conclusion: `${Math.floor(Math.random() * 10) % 2 === 0 ? `success` : `failure`}`,
       },
       workflow_run: {
-        id: Math.floor(new Date(timestamp).getTime() / 1000) + i,
+        id: workflowRunId,
         name: `workflow-${Math.floor(Math.random() * 10)}`,
         path: `.github/workflows/workflow-${Math.floor(Math.random() * 10)}.yml`,
       },
@@ -62,25 +62,27 @@ async function seed(timestamp) {
     });
 
     // Create a random number of workflow jobs associated with the workflow run between 1-10
-    const numWorkflowJobs = Math.floor(Math.random() * 10) + 1;
+    const numWorkflowJobs = Math.floor(Math.random() * 10) + 3;
 
     for (let j = 0; j < numWorkflowJobs; j++) {
       // Create a random workflow job
       // These are not all the fields that are available in the webhook data, only a subset for testing purposes
+      const workflowJobId = Math.floor(Math.random() * 1000000) + j;
       const workflowJob = {
         '@timestamp': timestamp,
         action: `completed`,
         duration: Math.floor(Math.random() * 1000),
         queue_duration: Math.floor(Math.random() * 500),
         workflow_job: {
-          id: Math.floor(new Date(timestamp).getTime() / 1000) + i,
+          id: workflowJobId,
           name: `job-${Math.floor(Math.random() * 10)}`,
-          run_id: Math.floor(new Date(timestamp).getTime() / 1000) + i,
+          run_id: workflowRunId,
           workflow_name: `workflow-${Math.floor(Math.random() * 10)}`,
           labels: [`${Math.floor(Math.random() * 10) % 2 === 0 ? `ubuntu-latest` : `windows-latest`}`],
           head_branch: `main`,
           conclusion: `${Math.floor(Math.random() * 10) % 2 === 0 ? `success` : `failure`}`,
           run_attempt: 1,
+          runner_group_name: `${Math.floor(Math.random() * 10) % 2 === 0 ? `GitHub Actions` : `Runner Group 1`}`,
           steps: [
             {
               name: `step-${Math.floor(Math.random() * 10)}`,
@@ -94,7 +96,7 @@ async function seed(timestamp) {
         repository: {
           id: 987654321,
           node_id: `R_zzzzzzzzzzzz`,
-          name: `Repo-${Math.floor(Math.random() * 10)}`,
+          name: `Repo-${Math.floor(Math.random() * 100)}`,
           full_name: `org-${Math.floor(Math.random() * 10)}/Repo-${Math.floor(Math.random() * 10)}`,
           private: true,
           owner: {
