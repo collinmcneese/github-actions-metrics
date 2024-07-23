@@ -93,10 +93,9 @@ router.post('/', async (req, res) => {
       const completed_at = await new Date(body.workflow_job.completed_at);
 
       if (body.action == 'in_progress') {
-        // If the queueEvent is found, calculate the queue duration
-        // Subtract the current time from the time the job was queued
-
+        // No processing logic for in_progress events currently
       }
+
       // calculate the duration of the workflow job
       if (body.action === 'completed') {
         console.log('setting duration');

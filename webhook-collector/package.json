@@ -10,7 +10,7 @@
   },
   "name": "webhook-collector",
   "description": "A simple webhook collector for GitHub webhook events",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "license": "ISC",
   "engines": {
     "npm": ">=8.0.0",
