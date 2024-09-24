@@ -1,6 +1,7 @@
 import { testing } from "../src/opensearch.js";
 const { durationCalculate } = testing;
 import { expect } from 'chai';
+import fc from 'fast-check';
 
 describe('OpenSearch', () => {
   describe('durationCalculate', () => {
@@ -21,6 +22,19 @@ describe('OpenSearch', () => {
       const end = new Date('2021-07-01T00:00:01.1Z');
       const duration = await durationCalculate({ start, end });
       expect(duration).to.eq(2);
+    });
+
+    it('should calculate the duration of two dates in seconds', async () => {
+      fc.assert(
+        fc.asyncProperty(
+          fc.date(),
+          fc.date(),
+          async (start, end) => {
+            const duration = await durationCalculate({ start, end });
+            expect(duration).to.eq((end - start) / 1000);
+          }
+        )
+      );
     });
   });
 });

@@ -3,6 +3,8 @@ name: CI Linting
 on:
   pull_request:
 
+permissions: {}
+
 jobs:
   lint:
     runs-on: ubuntu-latest
