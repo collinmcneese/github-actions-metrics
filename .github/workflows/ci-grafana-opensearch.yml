@@ -6,9 +6,13 @@ on:
       - 'grafana-opensearch/**'
       - '.github/workflows/ci-grafana-opensearch.yml'
 
+permissions: {}
+
 jobs:
   build-and-test:
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
     env:
       TARGET_TYPE: opensearch
       OPENSEARCH_HOST: opensearch-node1

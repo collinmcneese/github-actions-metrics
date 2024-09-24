@@ -6,8 +6,14 @@ on:
       - 'webhook-collector/**/*'
       - '.github/workflows/ci-webhook-collector.yml'
 
+permissions: {}
+
 jobs:
   build-and-test:
+    permissions:
+      id-token: write
+      contents: read
+      attestations: write
     runs-on: ubuntu-latest
     env:
       TARGET_TYPE: opensearch
@@ -40,3 +46,7 @@ jobs:
             echo "Detected uncommitted changes after build" >> $GITHUB_STEP_SUMMARY
           fi
         id: diff
+      - name: Generate artifact attestation
+        uses: actions/attest-build-provenance@v1
+        with:
+          subject-path: './webhook-collector/dist'
