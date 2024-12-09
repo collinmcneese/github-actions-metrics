@@ -21,7 +21,7 @@
   "dependencies": {
     "@eslint/js": "^9.16.0",
     "@opensearch-project/opensearch": "^2.13.0",
-    "express": "^4.21.1",
+    "express": "^4.21.2",
     "nodemon": "^3.1.7",
     "smee-client": "^2.0.4"
   },
@@ -31,7 +31,7 @@
     "esbuild": "^0.24.0",
     "eslint": "^9.16.0",
     "fast-check": "^3.23.1",
-    "mocha": "^10.8.2",
+    "mocha": "^11.0.1",
     "sinon": "^19.0.2"
   }
 }
