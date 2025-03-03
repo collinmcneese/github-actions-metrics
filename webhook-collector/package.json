@@ -20,7 +20,7 @@
   "type": "module",
   "dependencies": {
     "@eslint/js": "^9.21.0",
-    "@opensearch-project/opensearch": "^3.3.0",
+    "@opensearch-project/opensearch": "^3.4.0",
     "express": "^4.21.2",
     "nodemon": "^3.1.9",
     "smee-client": "^3.0.0"
