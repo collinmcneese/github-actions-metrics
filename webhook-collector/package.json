@@ -19,19 +19,19 @@
   "exports": "./index.js",
   "type": "module",
   "dependencies": {
-    "@eslint/js": "^9.28.0",
+    "@eslint/js": "^9.29.0",
     "@opensearch-project/opensearch": "^3.5.1",
     "express": "^5.1.0",
     "nodemon": "^3.1.10",
-    "smee-client": "^4.2.0"
+    "smee-client": "^4.3.1"
   },
   "devDependencies": {
     "chai": "^5.2.0",
     "chai-http": "^5.1.2",
     "esbuild": "^0.25.5",
-    "eslint": "^9.28.0",
+    "eslint": "^9.29.0",
     "fast-check": "^4.1.1",
-    "mocha": "^11.5.0",
-    "sinon": "^20.0.0"
+    "mocha": "^11.6.0",
+    "sinon": "^21.0.0"
   }
 }
