@@ -19,7 +19,7 @@
   "exports": "./index.js",
   "type": "module",
   "dependencies": {
-    "@eslint/js": "^9.32.0",
+    "@eslint/js": "^9.33.0",
     "@opensearch-project/opensearch": "^3.5.1",
     "express": "^5.1.0",
     "nodemon": "^3.1.10",
@@ -29,7 +29,7 @@
     "chai": "^5.2.1",
     "chai-http": "^5.1.2",
     "esbuild": "^0.25.8",
-    "eslint": "^9.32.0",
+    "eslint": "^9.33.0",
     "fast-check": "^4.2.0",
     "mocha": "^11.7.1",
     "sinon": "^21.0.0"
