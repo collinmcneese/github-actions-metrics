@@ -23,7 +23,7 @@
     "@opensearch-project/opensearch": "^3.5.1",
     "express": "^5.1.0",
     "nodemon": "^3.1.10",
-    "smee-client": "^4.3.1"
+    "smee-client": "^4.4.1"
   },
   "devDependencies": {
     "chai": "^6.2.0",
