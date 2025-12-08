@@ -21,16 +21,16 @@
   "dependencies": {
     "@eslint/js": "^9.39.1",
     "@opensearch-project/opensearch": "^3.5.1",
-    "express": "^5.1.0",
+    "express": "^5.2.1",
     "nodemon": "^3.1.11",
     "smee-client": "^5.0.0"
   },
   "devDependencies": {
     "chai": "^6.2.1",
     "chai-http": "^5.1.2",
-    "esbuild": "^0.27.0",
+    "esbuild": "^0.27.1",
     "eslint": "^9.39.1",
-    "fast-check": "^4.3.0",
+    "fast-check": "^4.4.0",
     "mocha": "^11.7.5",
     "sinon": "^21.0.0"
   }
