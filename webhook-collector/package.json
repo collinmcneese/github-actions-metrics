@@ -30,7 +30,7 @@
     "chai-http": "^5.1.2",
     "esbuild": "^0.27.2",
     "eslint": "^9.39.2",
-    "fast-check": "^4.5.2",
+    "fast-check": "^4.5.3",
     "mocha": "^11.7.5",
     "sinon": "^21.0.1"
   }
