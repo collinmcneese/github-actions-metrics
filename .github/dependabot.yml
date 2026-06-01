@@ -1,18 +1,22 @@
 version: 2
 updates:
-  - package-ecosystem: "npm"
-    directory: "./webhook-collector"
-    schedule:
-      interval: "weekly"
-    groups:
-      npm-deps:
-        patterns:
-          - "*"
-  - package-ecosystem: "github-actions"
-    directory: "/"
-    schedule:
-      interval: "weekly"
-    groups:
-      actions-deps:
-        patterns:
-          - "*"
+- package-ecosystem: "npm"
+  directory: "./webhook-collector"
+  schedule:
+    interval: "weekly"
+  groups:
+    npm-deps:
+      patterns:
+      - "*"
+  cooldown:
+    default-days: 7
+- package-ecosystem: "github-actions"
+  directory: "/"
+  schedule:
+    interval: "weekly"
+  groups:
+    actions-deps:
+      patterns:
+      - "*"
+  cooldown:
+    default-days: 7
